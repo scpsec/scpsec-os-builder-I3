@@ -1,4 +1,4 @@
-# 🛡️ Scpsec OS 1.1 (i3 Edition)
+# 🛡️ Scpsec OS 1.2 (i3 Edition)
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/scpsec/scpsec-logo/main/logo_circle.png" alt="Scpsec OS Logo" width="180">
@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-Designed for developers, penetration testers, security researchers, and Linux enthusiasts.
+Designed for developers, penetration testers, security researchers, system administrators, and Linux enthusiasts.
 </p>
 
 ---
@@ -18,9 +18,170 @@ Designed for developers, penetration testers, security researchers, and Linux en
 
 **Scpsec OS** is a customized Linux distribution based on **Debian 12 (Bookworm)** that combines performance, simplicity, and a modern desktop experience.
 
-Instead of a traditional desktop environment, Scpsec OS uses the **i3 Window Manager**, providing an efficient keyboard-driven workflow with minimal resource usage.
+Unlike traditional desktop environments, Scpsec OS is powered by the **i3 Window Manager**, delivering an efficient keyboard-driven workflow while consuming minimal system resources.
 
-The system comes preconfigured with carefully selected applications, custom themes, and security-oriented defaults, making it suitable for both everyday use and cybersecurity tasks.
+The operating system comes preconfigured with carefully selected applications, modern themes, hardware support, networking utilities, security tools, and productivity enhancements, making it suitable for both everyday use and professional cybersecurity work.
+
+---
+
+# 🚀 What's New in Version 1.2
+
+## 📶 Improved Wi-Fi Management
+
+Scpsec OS now provides a complete Wi-Fi management experience.
+
+### Features
+
+- NetworkManager integration
+- nm-applet system tray
+- Automatic network scanning
+- One-click wireless connection
+- Better driver compatibility
+- Automatic interface recovery
+
+### SCPSEC Wi-Fi Recovery
+
+A custom utility is included:
+
+```bash
+wifix
+```
+
+or
+
+```bash
+scpsec-wifi-fix
+```
+
+The utility automatically:
+
+- Unblocks Wi-Fi using rfkill
+- Restarts NetworkManager
+- Reloads wireless interfaces
+- Attempts driver recovery
+- Restores network connectivity
+
+---
+
+## 󰂯 Bluetooth Support
+
+Bluetooth works out of the box.
+
+Included components:
+
+- BlueZ
+- Blueman
+- bluetooth.service enabled
+- Blueman Applet
+- Polybar Bluetooth indicator
+
+You can connect, remove and manage Bluetooth devices directly from the desktop.
+
+---
+
+## 🔊 Audio & Brightness
+
+Scpsec OS includes a complete multimedia experience.
+
+### Audio
+
+- PipeWire / PulseAudio support
+- pamixer
+- pavucontrol
+- Polybar volume indicator
+
+### Brightness
+
+- brightnessctl
+- Keyboard multimedia shortcuts
+- Polybar brightness module
+
+Supported multimedia keys:
+
+- XF86AudioRaiseVolume
+- XF86AudioLowerVolume
+- XF86AudioMute
+- XF86MonBrightnessUp
+- XF86MonBrightnessDown
+
+---
+
+## ⚡ Power Menu
+
+A fully customized Rofi power menu is included.
+
+Shortcut:
+
+```
+Super + Shift + E
+```
+
+Available options:
+
+- 🔒 Lock
+- 🚪 Logout
+- 🔄 Reboot
+- ⚡ Shutdown
+
+Powered by:
+
+```
+/usr/bin/scpsec-powermenu
+```
+
+---
+
+## 🔔 Notifications
+
+Desktop notifications are handled by **Dunst**.
+
+Features:
+
+- Catppuccin Macchiato theme
+- Rounded notifications
+- Transparency
+- Low resource usage
+- Automatic startup
+
+---
+
+## 🛡 Expanded Security Toolkit
+
+Scpsec OS now ships with a larger collection of security tools.
+
+Included utilities:
+
+- aircrack-ng
+- Wireshark
+- tshark
+- macchanger
+- iwd
+- wpasupplicant
+
+Ideal for:
+
+- Network analysis
+- Wireless auditing
+- Packet inspection
+- Security research
+- Penetration testing
+
+---
+
+## 📡 Improved Hardware Support
+
+Scpsec OS includes additional firmware packages for better hardware compatibility.
+
+Included firmware:
+
+- firmware-iwlwifi
+- firmware-realtek
+- firmware-atheros
+- firmware-b43-installer
+- firmware-linux
+- firmware-linux-nonfree
+
+Wireless adapters work immediately after boot on most supported hardware.
 
 ---
 
@@ -28,77 +189,128 @@ The system comes preconfigured with carefully selected applications, custom them
 
 ## 🐧 System
 
-* Debian 12 (Bookworm)
-* 64-bit (amd64)
-* Lightweight and optimized
-* Non-free firmware support
-* Fast boot and low memory usage
-
-## 🖥 Desktop
-
-* i3 Window Manager
-* Catppuccin Macchiato theme
-* Polybar status bar
-* Picom compositor
-* Rofi application launcher
-* Dunst notification daemon
-* Feh wallpaper manager
-
-## 💻 Terminal
-
-* Kitty terminal emulator
-* Fastfetch system information
-* Customized Bash configuration
-* Developer-friendly shell
-
-## 🛠 Included Utilities
-
-* Calamares graphical installer
-* NetworkManager
-* GTK theme integration
-* Audio support
-* Screenshot utilities
-* Power management
-
-## 🔐 Security
-
-* Debian Stable security updates
-* Minimal attack surface
-* Security-focused configuration
-* Suitable for penetration testing environments
+- Debian 12 (Bookworm)
+- 64-bit (amd64)
+- Lightweight
+- Optimized
+- Fast boot
+- Low RAM usage
+- Non-free firmware included
+- Better hardware compatibility
 
 ---
 
-# ⌨️ Default Keyboard Shortcuts
+## 🖥 Desktop
 
-| Shortcut                       | Action                   |
-| ------------------------------ | ------------------------ |
-| **Super + Enter**              | Open Kitty               |
-| **Super + D**                  | Launch Rofi              |
-| **Super + Shift + Q**          | Close focused window     |
-| **Super + Shift + R**          | Reload i3 configuration  |
-| **Super + F**                  | Toggle fullscreen        |
-| **Super + 1-9**                | Switch workspace         |
-| **Super + Shift + 1-9**        | Move window to workspace |
-| **Super + Arrow Keys**         | Change focus             |
-| **Super + Shift + Arrow Keys** | Move window              |
+- i3 Window Manager
+- Polybar
+- Picom
+- Rofi
+- Kitty
+- Dunst
+- Feh
+- Catppuccin Macchiato
+- GTK Theme Integration
 
-> **Super** refers to the **Windows** key.
+---
+
+## 💻 Terminal
+
+- Kitty Terminal
+- Fastfetch
+- Customized Bash
+- Developer-friendly environment
+
+---
+
+## 📶 Networking
+
+- NetworkManager
+- nm-applet
+- SCPSEC Wi-Fi Recovery Tool
+- Bluetooth Applet
+- Automatic Network Management
+
+---
+
+## 🛠 Utilities
+
+- Calamares Installer
+- Screenshot Tools
+- Clipboard Support
+- Power Management
+- Brightness Control
+- Volume Control
+
+---
+
+## 🔐 Security
+
+- Debian Stable Updates
+- Minimal Attack Surface
+- Hardened Configuration
+- Wireless Security Toolkit
+- Packet Analysis Tools
+- MAC Address Utilities
+
+---
+
+# ⌨ Default Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| **Super + Enter** | Open Kitty |
+| **Super + D** | Launch Rofi |
+| **Super + Shift + Q** | Close Window |
+| **Super + Shift + R** | Reload i3 |
+| **Super + F** | Fullscreen |
+| **Super + Shift + E** | Power Menu |
+| **Super + 1-9** | Switch Workspace |
+| **Super + Shift + 1-9** | Move Window |
+| **Super + Arrow Keys** | Change Focus |
+| **Super + Shift + Arrow Keys** | Move Window |
+| **XF86Audio Keys** | Volume Control |
+| **XF86Brightness Keys** | Brightness Control |
+
+> **Super** refers to the **Windows key**.
 
 ---
 
 # 📦 Included Software
 
-* Kitty
-* i3wm
-* Polybar
-* Picom
-* Rofi
-* Dunst
-* Feh
-* NetworkManager
-* Fastfetch
-* Calamares Installer
+### Desktop
+
+- i3wm
+- Polybar
+- Picom
+- Kitty
+- Rofi
+- Dunst
+- Feh
+
+### Networking
+
+- NetworkManager
+- nm-applet
+- BlueZ
+- Blueman
+- iwd
+- wpasupplicant
+
+### Security
+
+- aircrack-ng
+- Wireshark
+- tshark
+- macchanger
+
+### Utilities
+
+- Fastfetch
+- Calamares Installer
+- brightnessctl
+- pamixer
+- pavucontrol
 
 ---
 
@@ -118,7 +330,7 @@ curl
 
 ---
 
-## Clone the Repository
+## Clone Repository
 
 ```bash
 git clone https://github.com/scpsec/scpsec-os-builder-I3.git
@@ -136,25 +348,21 @@ chmod +x build-scpsec-i3.sh
 sudo ./build-scpsec-i3.sh
 ```
 
-After the build finishes, the generated ISO will be located inside the project directory.
+After the build completes:
 
-Example:
-
-```text
-Scpsec-OS-1.1-I3-Desktop-amd64-2026.08.02.iso
+```
+Scpsec-OS-1.2-I3-Desktop-amd64-2026.08.02.iso
 ```
 
 ---
 
 # 🔑 Live Session
 
-| Username   | Password |
-| ---------- | -------- |
+| Username | Password |
+|----------|----------|
 | **scpsec** | **live** |
 
-### Sudo
-
-Passwordless sudo is enabled for the live session.
+Passwordless sudo is enabled in the live session.
 
 ---
 
@@ -162,44 +370,51 @@ Passwordless sudo is enabled for the live session.
 
 ```text
 .
-├── install-deps.sh
 ├── build.sh
+├── build-scpsec-i3.sh
+├── install-deps.sh
 ├── README.md
 └── LICENSE
 ```
 
 ---
 
-# 📸 Desktop
+# 📸 Desktop Highlights
 
-Features include:
-
-* Catppuccin Macchiato
-* Polybar
-* Picom blur & transparency
-* Rounded terminal
-* Fast boot
-* Modern dark theme
+- Catppuccin Macchiato
+- Polybar
+- Picom Transparency
+- Rounded Kitty Terminal
+- Dunst Notifications
+- Rofi Launcher
+- Fast Boot
+- Lightweight Design
+- Keyboard-driven Workflow
 
 ---
 
 # ❤️ Why Scpsec OS?
 
-* Extremely lightweight
-* Modern UI
-* Keyboard-first workflow
-* Debian stability
-* Security-oriented
-* Easy to customize
-* Open Source
+- Extremely Lightweight
+- Fast Boot
+- Low Memory Usage
+- Debian Stability
+- Modern User Interface
+- Professional Development Environment
+- Wireless Ready
+- Security Focused
+- Cybersecurity Toolkit Included
+- Beginner Friendly
+- Easy to Customize
+- Open Source
 
 ---
 
 # 📜 License
 
-This project is licensed under the **GNU General Public License v3.0 (GPL-3.0)**.
+Licensed under the **GNU General Public License v3.0 (GPL-3.0).**
 
-See the **LICENSE** file for more information.
+See the **LICENSE** file for additional information.
 
 ---
 
@@ -211,12 +426,22 @@ Developed and maintained by the **Scpsec Team**.
 
 # 🌐 Links
 
-- **Website:** https://scpsec.cc
-- **GitHub Organization:** https://github.com/scpsec
-- **Documentation:** https://docs.scpsec.cc
+**Website**
+
+https://scpsec.cc
+
+**Documentation**
+
+https://docs.scpsec.cc
+
+**GitHub**
+
+https://github.com/scpsec
 
 ---
 
 <p align="center">
-Made with ❤️ by the Scpsec Team
+
+Built with ❤️ by the Scpsec Team
+
 </p>
