@@ -91,4 +91,4 @@ apt-get install -y "${REQUIRED_PACKAGES[@]}"
 
 echo -e "${GREEN}[SUCCESS] All system checks passed and dependencies installed successfully!${NC}"
 echo -e "${GREEN}[SUCCESS] Your system is ready to build Scpsec OS.${NC}"
-echo -e "${BLUE}[NEXT STEP] Run: sudo ./build-scpsec-i3.sh${NC}"
+echo -e "${BLUE}[NEXT STEP] Run: sudo ./build.sh${NC}"
