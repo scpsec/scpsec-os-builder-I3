@@ -34,7 +34,7 @@ if [ -f /etc/os-release ]; then
         echo -e "${CYAN} We are SO PROUD to see you using our system! OMGGGGGG! 🎉${NC}"
         echo -e "${PURPLE}======================================================${NC}"
     else
-        echo -e "${BLUE}[INFO] Host OS detected: ${NAME} ${VERSION_ID}${NC}"
+        echo -e "${BLUE}[INFO] Host OS detected: ${NAME:-Linux} ${VERSION_ID:-}${NC}"
         if [[ "$ID" != "debian" && "$ID" != "ubuntu" && "$ID_LIKE" != *"debian"* ]]; then
             echo -e "${YELLOW}[WARNING] Live-build works best on Debian/Ubuntu-based systems.${NC}"
         fi
@@ -50,7 +50,7 @@ if [ "$TOTAL_RAM" -lt 3500 ]; then
     echo -e "${YELLOW}[WARNING] Less than 4GB RAM detected. Building ISO might be slow or run out of memory.${NC}"
 fi
 
-# 4. Check Free Disk Space (Minimum 15GB required)
+# 4. Check Free Disk Space (Minimum 12GB required)
 FREE_SPACE=$(df -m . | awk 'NR==2 {print $4}')
 FREE_SPACE_GB=$((FREE_SPACE / 1024))
 echo -e "${BLUE}[INFO] Available Disk Space: ${FREE_SPACE_GB} GB${NC}"
@@ -91,4 +91,4 @@ apt-get install -y "${REQUIRED_PACKAGES[@]}"
 
 echo -e "${GREEN}[SUCCESS] All system checks passed and dependencies installed successfully!${NC}"
 echo -e "${GREEN}[SUCCESS] Your system is ready to build Scpsec OS.${NC}"
-echo -e "${BLUE}[NEXT STEP] Run: sudo ./build.sh${NC}"
+echo -e "${BLUE}[NEXT STEP] Run: sudo ./build-scpsec-i3.sh${NC}"
