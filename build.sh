@@ -1,9 +1,9 @@
 #!/bin/bash
 # ==============================================================================
-# Scpsec OS 1.1 
+# Scpsec OS 1.2 
 # Copyright (c) Scpsec Company
 # Target Base: Debian x86_64 (Bookworm)
-# Target ISO Name: Scpsec-OS-1.1-I3-Desktop-amd64-2026.08.02.iso
+# Target ISO Name: Scpsec-OS-1.2-I3-Desktop-amd64-2026.08.02.iso
 # ==============================================================================
 
 set -e
@@ -14,7 +14,7 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-echo "[INFO] Starting Scpsec OS v1.1 i3wm hardened build process with Full Wi-Fi Maintenance Suite..."
+echo "[INFO] Starting Scpsec OS v1.2 i3wm hardened build process with Full Wi-Fi Maintenance Suite..."
 
 # Build environment setup
 BUILD_DIR="scpsec-os"
@@ -57,14 +57,14 @@ mkdir -p config/includes.chroot/etc/iwd/
 mkdir -p config/package-lists/
 mkdir -p config/hooks/live/
 
-# OS Metadata v1.1
+# OS Metadata v1.2
 echo "[INFO] Writing OS release information..."
 cat << 'EOF' > config/includes.chroot/etc/os-release
 NAME="Scpsec OS"
-VERSION="1.1"
+VERSION="1.2"
 ID=scpsec
 ID_LIKE=debian
-PRETTY_NAME="Scpsec OS 1.1 (i3wm Edition)"
+PRETTY_NAME="Scpsec OS 1.2 (i3wm Edition)"
 HOME_URL="https://scpsec.cc"
 SUPPORT_URL="https://scpsec.cc"
 BUG_REPORT_URL="https://scpsec.cc"
@@ -217,7 +217,7 @@ class WelcomeWindow(Adw.ApplicationWindow):
         logo.set_pixel_size(96)
         main_box.append(logo)
 
-        title = Gtk.Label(label="Welcome to Scpsec OS 1.1 (i3 Edition)")
+        title = Gtk.Label(label="Welcome to Scpsec OS 1.2 (i3 Edition)")
         title.add_css_class("title-1")
         main_box.append(title)
 
@@ -669,10 +669,10 @@ welcomeExpandingLogo: true
 strings:
   productName: "Scpsec OS"
   shortProductName: "Scpsec"
-  version: "1.1"
-  shortVersion: "1.1"
-  versionedName: "Scpsec OS 1.1"
-  shortVersionedName: "Scpsec 1.1"
+  version: "1.2"
+  shortVersion: "1.2"
+  versionedName: "Scpsec OS 1.2"
+  shortVersionedName: "Scpsec 1.2"
   sidebar: "Scpsec OS"
   navigation: "Installer"
   supportUrl: "https://scpsec.cc"
@@ -701,7 +701,7 @@ Presentation {
     Slide {
         Text {
             anchors.centerIn: parent
-            text: "Welcome to Scpsec OS 1.1 (i3 Edition)"
+            text: "Welcome to Scpsec OS 1.2 (i3 Edition)"
             font.pixelSize: 24
             color: "#cdd6f4"
         }
@@ -920,7 +920,7 @@ echo "[INFO] Running live-build..."
 lb build
 
 # ISO Rename to Target Name
-FINAL_ISO_NAME="Scpsec-OS-1.1-I3-Desktop-amd64-2026.08.02.iso"
+FINAL_ISO_NAME="Scpsec-OS-1.2-I3-Desktop-amd64-2026.08.02.iso"
 if [ -f live-image-amd64.hybrid.iso ]; then
     mv live-image-amd64.hybrid.iso "$FINAL_ISO_NAME"
     echo "[SUCCESS] Build completed! Created ISO: $FINAL_ISO_NAME"
