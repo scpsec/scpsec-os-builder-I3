@@ -1,6 +1,6 @@
 #!/bin/bash
 # ==============================================================================
-# Scpsec OS 1.1 - Production-Grade Live-Build System (i3wm Edition)
+# Scpsec OS 1.1 
 # Copyright (c) Scpsec Company
 # Target Base: Debian x86_64 (Bookworm)
 # Target ISO Name: Scpsec-OS-1.1-I3-Desktop-amd64-2026.08.02.iso
@@ -14,7 +14,7 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-echo "[INFO] Starting Scpsec OS v1.1 i3wm hardened build process..."
+echo "[INFO] Starting Scpsec OS v1.1 i3wm hardened build process with Full Wi-Fi Maintenance Suite..."
 
 # Build environment setup
 BUILD_DIR="scpsec-os"
@@ -53,6 +53,7 @@ mkdir -p config/includes.chroot/usr/share/plymouth/themes/scpsec/
 mkdir -p config/includes.chroot/etc/calamares/branding/scpsec/
 mkdir -p config/includes.chroot/etc/calamares/modules/
 mkdir -p config/includes.chroot/etc/lightdm/lightdm.conf.d/
+mkdir -p config/includes.chroot/etc/iwd/
 mkdir -p config/package-lists/
 mkdir -p config/hooks/live/
 
@@ -121,6 +122,11 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias update='sudo apt update && sudo apt upgrade -y'
 
+# Quick Wi-Fi Maintenance Aliases
+alias wifix='sudo scpsec-wifi-fix'
+alias wimon='sudo airmon-ng start'
+alias wioff='sudo airmon-ng stop'
+
 command -v batcat &>/dev/null && alias bat='batcat'
 command -v eza &>/dev/null && alias ls='eza --icons' && alias ll='eza -la --icons'
 
@@ -129,6 +135,51 @@ if command -v fastfetch &>/dev/null; then
 elif command -v neofetch &>/dev/null; then
     neofetch
 fi
+EOF
+
+# Automatic Wi-Fi Repair Tool (scpsec-wifi-fix)
+echo "[INFO] Injecting Scpsec Custom Wi-Fi Auto-Fix Tool..."
+cat << 'EOF' > config/includes.chroot/usr/bin/scpsec-wifi-fix
+#!/bin/bash
+# ==============================================================================
+# Scpsec OS - Automatic Wi-Fi & Driver Diagnostics Tool
+# ==============================================================================
+echo -e "\033[1;36m[+] Starting Scpsec Wi-Fi Diagnostics & Repair Tool...\033[0m"
+
+echo "[1] Unblocking RFKILL locks..."
+rfkill unblock all
+
+echo "[2] Restarting Network Services..."
+systemctl restart NetworkManager || true
+systemctl restart iwd || true
+
+echo "[3] Checking Wireless Interfaces..."
+INTERFACES=$(ip -br link | grep -E 'wlan|wlp' | awk '{print $1}')
+
+if [ -z "$INTERFACES" ]; then
+    echo -e "\033[1;31m[-] No wireless interfaces found!\033[0m"
+    echo "[!] Checking PCI/USB hardware drivers:"
+    lspci -nnk | grep -i net -A3
+    lsusb
+    echo -e "\033[1;33m[?] Try running: sudo modprobe iwlwifi OR sudo modprobe rtw88_8822ce\033[0m"
+else
+    for iface in $INTERFACES; do
+        echo -e "\033[1;32m[+] Found interface: $iface\033[0m"
+        ip link set $iface up
+    done
+    echo -e "\033[1;32m[+] Wi-Fi reset completed successfully!\033[0m"
+    echo -e "[*] Use 'iwctl' or 'nmcli device wifi list' to connect."
+fi
+EOF
+chmod +x config/includes.chroot/usr/bin/scpsec-wifi-fix
+
+# iwd configuration
+cat << 'EOF' > config/includes.chroot/etc/iwd/main.conf
+[General]
+EnableNetworkConfiguration=true
+
+[Network]
+NameResolvingService=systemd
 EOF
 
 # Scpsec Welcome Application
@@ -277,6 +328,7 @@ exec_always --no-startup-id picom -b
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 exec_always --no-startup-id feh --bg-fill /usr/share/backgrounds/scpsec-wallpaper.png
 exec_always --no-startup-id dunst
+exec_always --no-startup-id nm-applet
 exec --no-startup-id scpsec-welcome
 
 # Gaps & Borders
@@ -370,7 +422,7 @@ module-margin = 1
 font-0 = "JetBrainsMono Nerd Font:size=10;3"
 
 modules-left = xworkspaces xwindow
-modules-right = cpu memory volume date
+modules-right = wlan cpu memory volume date
 
 [module/xworkspaces]
 type = internal/i3
@@ -385,6 +437,19 @@ label-unfocused-padding = 2
 [module/xwindow]
 type = internal/xwindow
 label = %title:0:25:...%
+
+[module/wlan]
+type = internal/network
+interface-type = wireless
+interval = 3.0
+format-connected = <label-connected>
+format-connected-prefix = "󰤨 "
+format-connected-prefix-foreground = ${colors.green}
+label-connected = %essid%
+format-disconnected = <label-disconnected>
+format-disconnected-prefix = "󰤭 "
+format-disconnected-prefix-foreground = ${colors.accent}
+label-disconnected = Offline
 
 [module/cpu]
 type = internal/cpu
@@ -707,8 +772,8 @@ branding: scpsec
 prompt-at-end: true
 EOF
 
-# Complete Package Manifest (Safe APT Repo Packages)
-echo "[INFO] Creating Package Manifest..."
+# Complete Package Manifest (With Full Wi-Fi Diagnostics & Maintenance Suite)
+echo "[INFO] Creating Package Manifest with Wi-Fi Tools..."
 cat << 'EOF' > config/package-lists/scpsec.list.chroot
 # Display Server & Display Manager Core
 xorg
@@ -734,6 +799,35 @@ xclip
 papirus-icon-theme
 brightnessctl
 pamixer
+
+# Full Wi-Fi Maintenance, Analysis & Security Tools
+iwd
+wireless-tools
+iw
+rfkill
+network-manager
+network-manager-gnome
+wpasupplicant
+macchanger
+aircrack-ng
+wireshark
+tshark
+net-tools
+dnsutils
+pcaputils
+ethtool
+
+# Drivers & Hardware Firmwares (Full Coverage)
+firmware-linux
+firmware-linux-nonfree
+firmware-realtek
+firmware-iwlwifi
+firmware-atheros
+firmware-ipw2x00
+firmware-libertas
+firmware-brcm80211
+firmware-b43-installer
+firmware-zd1211
 
 # scpsec Welcome GUI Stack
 python3
@@ -766,13 +860,6 @@ eog
 gnome-calculator
 gnome-system-monitor
 
-# Drivers & Hardware Firmwares
-firmware-linux
-firmware-linux-nonfree
-firmware-realtek
-firmware-iwlwifi
-firmware-atheros
-
 # Build & System Utilities
 sudo
 git
@@ -787,7 +874,7 @@ make
 build-essential
 EOF
 
-# Chroot Hook (Live User, JetBrainsFont & Fastfetch deb Download)
+# Chroot Hook
 echo "[INFO] Registering Chroot Hook..."
 cat << 'EOF' > config/hooks/live/0090-scpsec-system-setup.hook.chroot
 #!/bin/sh
@@ -820,8 +907,10 @@ if [ -f "/tmp/$FASTFETCH_DEB" ]; then
     rm -f "/tmp/$FASTFETCH_DEB"
 fi
 
-# Enable LightDM Service
+# Enable LightDM, NetworkManager, and iwd Services
 systemctl enable lightdm.service || true
+systemctl enable NetworkManager.service || true
+systemctl enable iwd.service || true
 EOF
 
 chmod +x config/hooks/live/0090-scpsec-system-setup.hook.chroot
