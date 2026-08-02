@@ -121,9 +121,9 @@ curl
 ## Clone the Repository
 
 ```bash
-git clone https://github.com/scpsec/scpsec-os-builder.git
+git clone https://github.com/scpsec/scpsec-os-builder-I3.git
 
-cd scpsec-os-builder
+cd scpsec-os-builder-I3
 ```
 
 ---
@@ -162,11 +162,8 @@ Passwordless sudo is enabled for the live session.
 
 ```text
 .
-├── config/
-├── includes.chroot/
-├── hooks/
-├── auto/
-├── build-scpsec-i3.sh
+├── install-deps.sh
+├── build.sh
 ├── README.md
 └── LICENSE
 ```
@@ -214,8 +211,9 @@ Developed and maintained by the **Scpsec Team**.
 
 # 🌐 Links
 
-* **GitHub:** https://github.com/scpsec
-* **Website:** https://scpsec.cc
+- **Website:** https://scpsec.cc
+- **GitHub Organization:** https://github.com/scpsec
+- **Documentation:** https://docs.scpsec.cc
 
 ---
 
