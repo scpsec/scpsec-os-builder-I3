@@ -14,7 +14,7 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-echo "[INFO] Starting Scpsec OS v1.2 i3wm hardened build process with Full Wi-Fi Maintenance Suite..."
+echo "[INFO] Starting Scpsec OS v1.2 i3wm hardened build process with Full Suite..."
 
 # Build environment setup
 BUILD_DIR="scpsec-os"
@@ -149,9 +149,10 @@ echo -e "\033[1;36m[+] Starting Scpsec Wi-Fi Diagnostics & Repair Tool...\033[0m
 echo "[1] Unblocking RFKILL locks..."
 rfkill unblock all
 
-echo "[2] Restarting Network Services..."
+echo "[2] Restarting Network & Bluetooth Services..."
 systemctl restart NetworkManager || true
 systemctl restart iwd || true
+systemctl restart bluetooth || true
 
 echo "[3] Checking Wireless Interfaces..."
 INTERFACES=$(ip -br link | grep -E 'wlan|wlp' | awk '{print $1}')
@@ -172,6 +173,21 @@ else
 fi
 EOF
 chmod +x config/includes.chroot/usr/bin/scpsec-wifi-fix
+
+# Rofi Power Menu Script
+echo "[INFO] Creating Rofi Power Menu script..."
+cat << 'EOF' > config/includes.chroot/usr/bin/scpsec-powermenu
+#!/bin/bash
+CHOSEN=$(echo -e "🔒 Lock\n🚪 Logout\n🔄 Reboot\n⚡ Poweroff" | rofi -dmenu -i -p "Power Menu:" -theme ~/.config/rofi/config.rasi)
+
+case "$CHOSEN" in
+    "🔒 Lock") i3lock -c 1e1e2e ;;
+    "🚪 Logout") i3-msg exit ;;
+    "🔄 Reboot") systemctl reboot ;;
+    "⚡ Poweroff") systemctl poweroff ;;
+esac
+EOF
+chmod +x config/includes.chroot/usr/bin/scpsec-powermenu
 
 # iwd configuration
 cat << 'EOF' > config/includes.chroot/etc/iwd/main.conf
@@ -329,6 +345,7 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh
 exec_always --no-startup-id feh --bg-fill /usr/share/backgrounds/scpsec-wallpaper.png
 exec_always --no-startup-id dunst
 exec_always --no-startup-id nm-applet
+exec_always --no-startup-id blueman-applet
 exec --no-startup-id scpsec-welcome
 
 # Gaps & Borders
@@ -351,6 +368,7 @@ client.urgent            $red     $red     $bg     $red
 # Binds
 bindsym $mod+Return exec kitty
 bindsym $mod+d exec rofi -show drun -theme ~/.config/rofi/config.rasi
+bindsym $mod+Shift+e exec scpsec-powermenu
 bindsym $mod+Shift+q kill
 bindsym $mod+f fullscreen toggle
 bindsym $mod+Shift+space floating toggle
@@ -386,7 +404,7 @@ bindsym $mod+Shift+3 move container to workspace number $ws3
 bindsym $mod+Shift+4 move container to workspace number $ws4
 bindsym $mod+Shift+5 move container to workspace number $ws5
 
-# Controls
+# Media Controls (Volume & Brightness)
 bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 5
 bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 5
 bindsym XF86AudioMute exec --no-startup-id pamixer -t
@@ -405,6 +423,7 @@ bg-alt = #313244
 fg = #cdd6f4
 accent = #cba6f7
 green = #a6e3a1
+blue = #89b4fa
 
 [bar/main]
 width = 100%
@@ -422,7 +441,7 @@ module-margin = 1
 font-0 = "JetBrainsMono Nerd Font:size=10;3"
 
 modules-left = xworkspaces xwindow
-modules-right = wlan cpu memory volume date
+modules-right = bluetooth wlan brightness volume cpu memory date powermenu
 
 [module/xworkspaces]
 type = internal/i3
@@ -436,7 +455,14 @@ label-unfocused-padding = 2
 
 [module/xwindow]
 type = internal/xwindow
-label = %title:0:25:...%
+label = %title:0:20:...%
+
+[module/bluetooth]
+type = custom/script
+exec = systemctl is-active bluetooth | grep -q 'active' && echo "󰂯 On" || echo "󰂲 Off"
+interval = 5
+click-left = blueman-manager &
+format-prefix-foreground = ${colors.blue}
 
 [module/wlan]
 type = internal/network
@@ -446,10 +472,28 @@ format-connected = <label-connected>
 format-connected-prefix = "󰤨 "
 format-connected-prefix-foreground = ${colors.green}
 label-connected = %essid%
+click-left = nm-connection-editor &
 format-disconnected = <label-disconnected>
 format-disconnected-prefix = "󰤭 "
 format-disconnected-prefix-foreground = ${colors.accent}
 label-disconnected = Offline
+
+[module/brightness]
+type = internal/backlight
+card = intel_backlight
+use-actual-brightness = true
+poll-interval = 0
+enable-scroll = true
+format-prefix = "󰃠 "
+format-prefix-foreground = ${colors.accent}
+label = %percentage%%
+
+[module/volume]
+type = internal/pulseaudio
+format-volume-prefix = "󰕾 "
+format-volume-prefix-foreground = ${colors.green}
+label-volume = %percentage%%
+click-right = pavucontrol &
 
 [module/cpu]
 type = internal/cpu
@@ -465,18 +509,18 @@ format-prefix = "󰍛 "
 format-prefix-foreground = ${colors.accent}
 label = %percentage_used%%
 
-[module/volume]
-type = internal/pulseaudio
-format-volume-prefix = "󰕾 "
-format-volume-prefix-foreground = ${colors.green}
-label-volume = %percentage%%
-
 [module/date]
 type = internal/date
 interval = 1
 date = %H:%M:%S  %a, %b %d
 label = %date%
 label-foreground = ${colors.accent}
+
+[module/powermenu]
+type = custom/text
+content = " 󰐥 "
+content-foreground = ${colors.accent}
+click-left = scpsec-powermenu
 EOF
 
 # Polybar Launcher Script
@@ -552,19 +596,20 @@ selection_foreground #cdd6f4
 cursor #f5e0dc
 EOF
 
-# Dunst Config
+# Dunst Notification Config
 cat << 'EOF' > config/includes.chroot/etc/skel/.config/dunst/dunstrc
 [global]
     font = JetBrainsMono Nerd Font 10
     corner_radius = 8
-    width = 300
-    height = 100
+    width = 320
+    height = 120
     offset = 20x45
     origin = top-right
     background = "#1e1e2e"
     foreground = "#cdd6f4"
     frame_color = "#cba6f7"
     frame_width = 2
+    timeout = 5
 EOF
 
 # Firefox Policies
@@ -772,8 +817,8 @@ branding: scpsec
 prompt-at-end: true
 EOF
 
-# Complete Package Manifest (With Full Wi-Fi Diagnostics & Maintenance Suite)
-echo "[INFO] Creating Package Manifest with Wi-Fi Tools..."
+# Complete Package Manifest
+echo "[INFO] Creating Package Manifest with Bluetooth, Media & Wi-Fi Tools..."
 cat << 'EOF' > config/package-lists/scpsec.list.chroot
 # Display Server & Display Manager Core
 xorg
@@ -799,6 +844,12 @@ xclip
 papirus-icon-theme
 brightnessctl
 pamixer
+pavucontrol
+
+# Bluetooth Suite
+bluez
+bluez-tools
+blueman
 
 # Full Wi-Fi Maintenance, Analysis & Security Tools
 iwd
@@ -907,10 +958,11 @@ if [ -f "/tmp/$FASTFETCH_DEB" ]; then
     rm -f "/tmp/$FASTFETCH_DEB"
 fi
 
-# Enable LightDM, NetworkManager, and iwd Services
+# Enable Essential System Services
 systemctl enable lightdm.service || true
 systemctl enable NetworkManager.service || true
 systemctl enable iwd.service || true
+systemctl enable bluetooth.service || true
 EOF
 
 chmod +x config/hooks/live/0090-scpsec-system-setup.hook.chroot
