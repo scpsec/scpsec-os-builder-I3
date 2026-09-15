@@ -1,4 +1,4 @@
-# 🛡️ Scpsec OS 1.2 (i3 Edition)
+# 🛡️ Scpsec OS 1.3 (i3 Edition)
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/scpsec/scpsec-logo/main/logo_circle.png" alt="Scpsec OS Logo" width="180">
@@ -24,7 +24,7 @@ The operating system comes preconfigured with carefully selected applications, m
 
 ---
 
-# 🚀 What's New in Version 1.2
+# 🚀 What's New in Version 1.3
 
 ## 📶 Improved Wi-Fi Management
 
@@ -343,16 +343,27 @@ cd scpsec-os-builder-I3
 ## Build
 
 ```bash
-chmod +x build-scpsec-i3.sh
+chmod +x build.sh
 
-sudo ./build-scpsec-i3.sh
+sudo ./build.sh
 ```
 
 After the build completes:
 
 ```
-Scpsec-OS-1.2-I3-Desktop-amd64-2026.08.02.iso
+Scpsec-OS-1.3-I3-Desktop-amd64-2026.09.15.iso
 ```
+
+## Build Script Corrections
+
+The Scpsec OS 1.3 builder now:
+
+- Uses consistent Unix line endings so Bash heredocs are parsed correctly.
+- Fails early with an actionable message when required build commands are missing.
+- Verifies that branding downloads are present before continuing.
+- Uses a stable build directory based on the script location.
+- Fails if live-build does not produce a non-empty ISO instead of reporting a false success.
+- Reports the full path of the generated ISO after a successful build.
 
 ---
 
@@ -371,7 +382,6 @@ Passwordless sudo is enabled in the live session.
 ```text
 .
 ├── build.sh
-├── build-scpsec-i3.sh
 ├── install-deps.sh
 ├── README.md
 └── LICENSE
