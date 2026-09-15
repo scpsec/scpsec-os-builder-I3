@@ -1,10 +1,12 @@
 #!/bin/bash
 # ==============================================================================
-# Scpsec OS - Dependency Installer & System Pre-Flight Checker
+# Scpsec OS 1.3 - Dependency Installer & System Pre-Flight Checker
 # Copyright (c) Scpsec Company
 # ==============================================================================
 
-set -e
+set -Eeuo pipefail
+
+VERSION="1.3"
 
 # Color definitions for status output
 RED='\033[0;31m'
@@ -15,7 +17,7 @@ PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
-echo -e "${BLUE}[INFO] Starting Scpsec OS System Pre-Flight Check...${NC}"
+echo -e "${BLUE}[INFO] Starting Scpsec OS ${VERSION} System Pre-Flight Check...${NC}"
 
 # 1. Check Root Privileges
 if [ "$EUID" -ne 0 ]; then
@@ -28,14 +30,14 @@ if [ -f /etc/os-release ]; then
     . /etc/os-release
     
     # Check if the host OS is Scpsec OS
-    if [[ "${NAME,,}" == *"scpsec"* || "${ID,,}" == *"scpsec"* ]]; then
+    if [[ "${NAME:-}" == *[Ss][Cc][Pp][Ss][Ee][Cc]* || "${ID:-}" == *[Ss][Cc][Pp][Ss][Ee][Cc]* ]]; then
         echo -e "${PURPLE}======================================================${NC}"
         echo -e "${CYAN} OOOOOOOOOH! You are running Scpsec OS! 🚀🔥${NC}"
         echo -e "${CYAN} We are SO PROUD to see you using our system! OMGGGGGG! 🎉${NC}"
         echo -e "${PURPLE}======================================================${NC}"
     else
         echo -e "${BLUE}[INFO] Host OS detected: ${NAME:-Linux} ${VERSION_ID:-}${NC}"
-        if [[ "$ID" != "debian" && "$ID" != "ubuntu" && "$ID_LIKE" != *"debian"* ]]; then
+        if [[ "${ID:-}" != "debian" && "${ID:-}" != "ubuntu" && "${ID_LIKE:-}" != *"debian"* ]]; then
             echo -e "${YELLOW}[WARNING] Live-build works best on Debian/Ubuntu-based systems.${NC}"
         fi
     fi
@@ -50,13 +52,14 @@ if [ "$TOTAL_RAM" -lt 3500 ]; then
     echo -e "${YELLOW}[WARNING] Less than 4GB RAM detected. Building ISO might be slow or run out of memory.${NC}"
 fi
 
-# 4. Check Free Disk Space (Minimum 12GB required)
-FREE_SPACE=$(df -m . | awk 'NR==2 {print $4}')
+# 4. Check Free Disk Space (Minimum 15GB required)
+MIN_FREE_SPACE_GB=15
+FREE_SPACE=$(df -Pm . | awk 'NR==2 {print $4}')
 FREE_SPACE_GB=$((FREE_SPACE / 1024))
 echo -e "${BLUE}[INFO] Available Disk Space: ${FREE_SPACE_GB} GB${NC}"
 
-if [ "$FREE_SPACE_GB" -lt 12 ]; then
-    echo -e "${RED}[ERROR] Insufficient disk space! At least 15GB of free space is required to build the ISO.${NC}"
+if [ "$FREE_SPACE_GB" -lt "$MIN_FREE_SPACE_GB" ]; then
+    echo -e "${RED}[ERROR] Insufficient disk space! At least ${MIN_FREE_SPACE_GB}GB of free space is required to build the ISO.${NC}"
     exit 1
 fi
 
@@ -90,5 +93,5 @@ echo -e "${BLUE}[INFO] Installing packages: ${REQUIRED_PACKAGES[*]}${NC}"
 apt-get install -y "${REQUIRED_PACKAGES[@]}"
 
 echo -e "${GREEN}[SUCCESS] All system checks passed and dependencies installed successfully!${NC}"
-echo -e "${GREEN}[SUCCESS] Your system is ready to build Scpsec OS.${NC}"
+echo -e "${GREEN}[SUCCESS] Your system is ready to build Scpsec OS ${VERSION}.${NC}"
 echo -e "${BLUE}[NEXT STEP] Run: sudo ./build.sh${NC}"
