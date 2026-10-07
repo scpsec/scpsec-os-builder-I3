@@ -208,13 +208,13 @@ chmod +x config/includes.chroot/usr/bin/scpsec-wifi-fix
 echo "[INFO] Creating Rofi Power Menu script..."
 cat << 'EOF' > config/includes.chroot/usr/bin/scpsec-powermenu
 #!/bin/bash
-CHOSEN=$(echo -e "🔒 Lock\n🚪 Logout\n🔄 Reboot\n⚡ Poweroff" | rofi -dmenu -i -p "Power Menu:" -theme ~/.config/rofi/config.rasi)
+CHOSEN=$(echo -e " Lock\n Logout\n Reboot\n Poweroff" | rofi -dmenu -i -p "Power Menu:" -theme ~/.config/rofi/config.rasi)
 
 case "$CHOSEN" in
-    "🔒 Lock") i3lock -c 1e1e2e ;;
-    "🚪 Logout") i3-msg exit ;;
-    "🔄 Reboot") systemctl reboot ;;
-    "⚡ Poweroff") systemctl poweroff ;;
+    " Lock") i3lock -c 1e1e2e ;;
+    " Logout") i3-msg exit ;;
+    " Reboot") systemctl reboot ;;
+    " Poweroff") systemctl poweroff ;;
 esac
 EOF
 chmod +x config/includes.chroot/usr/bin/scpsec-powermenu
@@ -279,17 +279,17 @@ class WelcomeWindow(Adw.ApplicationWindow):
         grid.set_halign(Gtk.Align.CENTER)
         grid.set_margin_top(12)
 
-        btn_web = Gtk.Button(label="🌐 Visit Website")
+        btn_web = Gtk.Button(label=" Visit Website")
         btn_web.set_size_request(160, 42)
         btn_web.connect("clicked", lambda x: subprocess.Popen(["xdg-open", "https://scpsec.cc"]))
         grid.attach(btn_web, 0, 0, 1, 1)
 
-        btn_settings = Gtk.Button(label="⚙️ Appearance (LXAppearance)")
+        btn_settings = Gtk.Button(label=" Appearance (LXAppearance)")
         btn_settings.set_size_request(160, 42)
         btn_settings.connect("clicked", lambda x: subprocess.Popen(["lxappearance"]))
         grid.attach(btn_settings, 1, 0, 1, 1)
 
-        btn_term = Gtk.Button(label="💻 Open Terminal")
+        btn_term = Gtk.Button(label=" Open Terminal")
         btn_term.set_size_request(160, 42)
         btn_term.connect("clicked", lambda x: subprocess.Popen(["kitty"]))
         grid.attach(btn_term, 0, 1, 2, 1)
