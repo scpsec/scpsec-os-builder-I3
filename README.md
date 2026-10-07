@@ -24,9 +24,9 @@ The operating system comes preconfigured with carefully selected applications, m
 
 ---
 
-# 🚀 What's New in Version 1.3
+#  What's New in Version 1.3
 
-## 📶 Improved Wi-Fi Management
+##  Improved Wi-Fi Management
 
 Scpsec OS now provides a complete Wi-Fi management experience.
 
@@ -79,7 +79,7 @@ You can connect, remove and manage Bluetooth devices directly from the desktop.
 
 ---
 
-## 🔊 Audio & Brightness
+##  Audio & Brightness
 
 Scpsec OS includes a complete multimedia experience.
 
@@ -106,7 +106,7 @@ Supported multimedia keys:
 
 ---
 
-## ⚡ Power Menu
+##  Power Menu
 
 A fully customized Rofi power menu is included.
 
@@ -118,10 +118,10 @@ Super + Shift + E
 
 Available options:
 
-- 🔒 Lock
-- 🚪 Logout
-- 🔄 Reboot
-- ⚡ Shutdown
+-  Lock
+-  Logout
+-  Reboot
+-  Shutdown
 
 Powered by:
 
@@ -131,7 +131,7 @@ Powered by:
 
 ---
 
-## 🔔 Notifications
+##  Notifications
 
 Desktop notifications are handled by **Dunst**.
 
@@ -145,7 +145,7 @@ Features:
 
 ---
 
-## 🛡 Expanded Security Toolkit
+##  Expanded Security Toolkit
 
 Scpsec OS now ships with a larger collection of security tools.
 
@@ -168,7 +168,7 @@ Ideal for:
 
 ---
 
-## 📡 Improved Hardware Support
+##  Improved Hardware Support
 
 Scpsec OS includes additional firmware packages for better hardware compatibility.
 
@@ -185,9 +185,9 @@ Wireless adapters work immediately after boot on most supported hardware.
 
 ---
 
-# 🚀 Features
+#  Features
 
-## 🐧 System
+##  System
 
 - Debian 12 (Bookworm)
 - 64-bit (amd64)
@@ -200,7 +200,7 @@ Wireless adapters work immediately after boot on most supported hardware.
 
 ---
 
-## 🖥 Desktop
+##  Desktop
 
 - i3 Window Manager
 - Polybar
@@ -214,7 +214,7 @@ Wireless adapters work immediately after boot on most supported hardware.
 
 ---
 
-## 💻 Terminal
+##  Terminal
 
 - Kitty Terminal
 - Fastfetch
@@ -223,7 +223,7 @@ Wireless adapters work immediately after boot on most supported hardware.
 
 ---
 
-## 📶 Networking
+##  Networking
 
 - NetworkManager
 - nm-applet
@@ -233,7 +233,7 @@ Wireless adapters work immediately after boot on most supported hardware.
 
 ---
 
-## 🛠 Utilities
+##  Utilities
 
 - Calamares Installer
 - Screenshot Tools
@@ -244,7 +244,7 @@ Wireless adapters work immediately after boot on most supported hardware.
 
 ---
 
-## 🔐 Security
+##  Security
 
 - Debian Stable Updates
 - Minimal Attack Surface
@@ -255,7 +255,7 @@ Wireless adapters work immediately after boot on most supported hardware.
 
 ---
 
-# ⌨ Default Keyboard Shortcuts
+#  Default Keyboard Shortcuts
 
 | Shortcut | Action |
 |----------|--------|
@@ -276,7 +276,7 @@ Wireless adapters work immediately after boot on most supported hardware.
 
 ---
 
-# 📦 Included Software
+#  Included Software
 
 ### Desktop
 
@@ -314,7 +314,7 @@ Wireless adapters work immediately after boot on most supported hardware.
 
 ---
 
-# 🏗 Build the ISO
+#  Build the ISO
 
 ## Install Dependencies
 
@@ -367,7 +367,7 @@ The Scpsec OS 1.3 builder now:
 
 ---
 
-# 🔑 Live Session
+#  Live Session
 
 | Username | Password |
 |----------|----------|
@@ -377,7 +377,7 @@ Passwordless sudo is enabled in the live session.
 
 ---
 
-# 📂 Project Structure
+#  Project Structure
 
 ```text
 .
@@ -389,7 +389,7 @@ Passwordless sudo is enabled in the live session.
 
 ---
 
-# 📸 Desktop Highlights
+#  Desktop Highlights
 
 - Catppuccin Macchiato
 - Polybar
@@ -403,7 +403,7 @@ Passwordless sudo is enabled in the live session.
 
 ---
 
-# ❤️ Why Scpsec OS?
+#  Why Scpsec OS?
 
 - Extremely Lightweight
 - Fast Boot
@@ -420,7 +420,7 @@ Passwordless sudo is enabled in the live session.
 
 ---
 
-# 📜 License
+#  License
 
 Licensed under the **GNU General Public License v3.0 (GPL-3.0).**
 
@@ -428,13 +428,13 @@ See the **LICENSE** file for additional information.
 
 ---
 
-# 👥 Maintainers
+#  Maintainers
 
 Developed and maintained by the **Scpsec Team**.
 
 ---
 
-# 🌐 Links
+#  Links
 
 **Website**
 
