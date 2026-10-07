@@ -1,4 +1,4 @@
-# 🛡️ Scpsec OS 1.3 (i3 Edition)
+#  Scpsec OS 1.3 (i3 Edition)
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/scpsec/scpsec-logo/main/logo_circle.png" alt="Scpsec OS Logo" width="180">
@@ -14,7 +14,7 @@ Designed for developers, penetration testers, security researchers, system admin
 
 ---
 
-# ✨ Overview
+#  Overview
 
 **Scpsec OS** is a customized Linux distribution based on **Debian 12 (Bookworm)** that combines performance, simplicity, and a modern desktop experience.
 
